@@ -1,0 +1,307 @@
+;
+; (c) Copyright 2010 SOMAGIC, INC
+;
+
+[Version]
+signature="$CHICAGO$"
+Class=Media
+ClassGUID={4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider=%SM%
+;LayoutFile=Layout.inf
+CatalogFile=SmiUsbGrabber3C.cat
+DriverVer=05/14/2010, 1.0.6.26
+
+[SourceDisksNames]
+1=%SourceDisk%,,,
+
+[SourceDisksFiles]
+SmiUsbGrabber3C.sys = 1
+
+; F i l e   c o p y i n g   s e c t i o n s (where the files go to).
+;
+[DestinationDirs]
+SMIGrabber3C.Files.Ext = 10,System32\Drivers
+;SMIGrabber3C.Files.Inf = 10,Inf
+
+
+[Manufacturer]
+%MfgName%=SM, NTx86, NTia64, NTamd64
+
+[ControlFlags]
+ExcludeFromSelect=*
+ExcludeFromSelect.NT=*
+
+
+; =================== Generic ==================================
+
+[SM.NTx86]
+%SM.TV.DeviceDesc%=SM.Device,USB\VID_1C88&PID_003C
+%SM.BL.DeviceDesc%=SM.Device,USB\VID_1C88&PID_0007
+
+[SM.NTia64]
+%SM.TV.DeviceDesc%=SM.Device,USB\VID_1C88&PID_003C
+%SM.BL.DeviceDesc%=SM.Device,USB\VID_1C88&PID_0007
+
+[SM.NTamd64]
+%SM.TV.DeviceDesc%=SM.Device,USB\VID_1C88&PID_003C
+%SM.BL.DeviceDesc%=SM.Device,USB\VID_1C88&PID_0007 
+
+[SM.Device.NT]
+Include    = ks.inf, kscaptur.inf, bda.inf
+Needs      = KS.Registration.NT,KSCAPTUR.Registration.NT,BDA.Registration.NT,bda.Installation.NT,bdacap.Installation.NT
+AddReg     = SM.AddReg
+CopyFiles  = SMIGrabber3C.Files.Ext
+
+[SM.Device.NT.Services]
+Addservice = SMIGrabber3C, 0x00000002, SM.AddService
+
+[SM.AddService]
+DisplayName    = %SM.FriendlyName%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\SmiUsbGrabber3C.sys
+LoadOrderGroup = Base
+
+[SMIGrabber3C.Files.Ext]
+SmiUsbGrabber3C.sys
+
+[SM.Device.NT.Interfaces]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; for Port A, use for ATV ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+AddInterface = %KSCATEGORY_TVTUNER%,  %KSSTRING_BdaAnlgSWTunerFilter%, SmBdaAnlgTuner.Filter,0
+AddInterface = %KSCATEGORY_CROSSBAR%, %KSSTRING_BdaXBarFilter%, BdaXbar.Filter
+AddInterface = %KSCATEGORY_ENCODER%,  %KSSTRING_BdaEncoderFilter%, BdaEncoder.Filter
+AddInterface = %KSCATEGORY_MULTIPLEXER%,  %KSSTRING_BdaEncoderFilter%, BdaEncoder.Filter
+AddInterface = %KSCATEGORY_TVAUDIO%,  %KSSTRING_BdaTVAudioFilter%, BdaTVAudio.Filter
+AddInterface = %KSCATEGORY_CAPTURE%,  %KSSTRING_BdaAnlgCaptureFilter%, BdaAnlgCapture.Filter
+AddInterface = %KSCATEGORY_VIDEO%,    %KSSTRING_BdaAnlgCaptureFilter%, BdaAnlgCapture.Filter
+;///////Vendor Specific Device IO Control Filter/////// 
+AddInterface = %KSCATEGORY_DEVICE_IO_CONTROL%, %KSSTRING_BdaDeviceIoControlFilter%, BdaDeviceIoControl.Filter
+;///////       End of Device IO Control Filter ///////
+
+
+[SM.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,SmiUsbGrabber3C.sys
+HKR,,PageOutWhenUnopened,3,01
+HKR,,CLSID,,%KSTvTune.CLSID%
+HKR,,FriendlyName,,%HybridTv.FilterDesc%
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; for Port A, use for ATV ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[SmBdaAnlgTuner.Filter]
+AddReg = SmBdaAnlgTuner.Filter.AddReg, PinNames.AddReg, Category.Addreg
+[SmBdaAnlgTuner.Filter.AddReg]
+HKR,,CLSID,,%KSTvTune.CLSID%
+;HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%SmBdaAnlgTuner.FilterDesc%
+[SmBdaAnlgTuner.Services]
+AddService=SmBDAAnlgTuner, 0x00000002, SmBdaAnlgTuner.ServiceInstall
+
+[SmBdaAnlgTuner.ServiceInstall]
+DisplayName=%SmBdaAnlgTuner.DeviceDesc%
+ServiceType=%SERVICE_KERNEL_DRIVER%
+StartType=%SERVICE_DEMAND_START%
+ErrorControl=%SERVICE_ERROR_NORMAL%
+ServiceBinary=%10%\system32\drivers\SmiUsbGrabber3C.sys
+LoadOrderGroup=ExtendedBase
+
+[BdaXbar.Filter]
+AddReg = BdaXBar.Filter.AddReg
+[BdaXBar.Filter.Addreg]
+HKR,,CLSID,,%KSXBar.CLSID%
+HKR,,FriendlyName,,%BdaXBar.FilterDesc%
+[BdaXBar.Services]
+AddService=SmBDAAnlgTuner, 0x00000002, SmBdaAnlgTuner.ServiceInstall
+
+[BdaEncoder.Filter]
+AddReg = BdaEncoder.Filter.AddReg
+[BdaEncoder.Filter.Addreg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BdaEncoder.FilterDesc%
+[BdaEncoder.Services]
+AddService=SmBDAAnlgTuner, 0x00000002, SmBdaAnlgTuner.ServiceInstall
+
+
+[BdaTVAudio.Filter]
+AddReg = BdaTVAudio.Filter.AddReg
+[BdaTVAudio.Filter.Addreg]
+HKR,,CLSID,,%KSTVAudio.CLSID%
+;HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BdaTVAudio.FilterDesc%
+[BdaTVAudio.Services]
+AddService=SmBDAAnlgTuner, 0x00000002, SmBdaAnlgTuner.ServiceInstall
+
+
+[BdaAnlgCapture.Filter]
+AddReg = BdaAnlgCapture.Filter.AddReg
+[BdaAnlgCapture.Filter.Addreg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BdaAnlgCapture.FilterDesc%
+[BdaAnlgCapture.Services]
+AddService=SmBDAAnlgTuner, 0x00000002, SmBdaAnlgTuner.ServiceInstall
+
+;///////Vendor Specific Device IO Control Filter/////// 
+[BdaDeviceIoControl.Filter]
+AddReg = BdaDeviceIoControl.Filter.AddReg
+;
+[BdaDeviceIoControl.Filter.Addreg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BdaDeviceIoControl.FilterDesc%
+;///////       End of Device IO Control Filter ///////
+
+[PinNames.AddReg]
+HKLM,%MediaCategories%\%GUID.PINNAME_TVAudioIn%,Name,,%Pin.TVAudioIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_TVAudioOut%,Name,,%Pin.TVAudioOut%
+HKLM,%MediaCategories%\%GUID.PINNAME_AnalogVideoOut%,Name,,%Pin.AnalogVideoOut%
+HKLM,%MediaCategories%\%GUID.PINNAME_AnalogAudioOut%,Name,,%Pin.AnalogAudioOut%
+HKLM,%MediaCategories%\%GUID.PINNAME_VideoTunerIn%,Name,,%Pin.VideoTunerIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_CompositeVideoIn%,Name,,%Pin.CompositeVideoIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_SvideoVideoIn%,Name,,%Pin.SvideoVideoIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_YPbPrVideoIn%,Name,,%Pin.YPbPrVideoIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_AudioTunerIn%,Name,,%Pin.AudioTunerIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_CompositeAudioIn%,Name,,%Pin.CompositeAudioIn%
+;;HKLM,%MediaCategories%\%GUID.PINNAME_SvideoAudioIn%,Name,,%Pin.SvideoAudioIn%
+;;HKLM,%MediaCategories%\%GUID.PINNAME_YPbPrAudioIn%,Name,,%Pin.YPbPrAudioIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_VideoDecOut%,Name,,%Pin.VideoDecOut%
+HKLM,%MediaCategories%\%GUID.PINNAME_AudioDecOut%,Name,,%Pin.AudioDecOut%
+HKLM,%MediaCategories%\%GUID.PINNAME_AnalogVideoIn%,Name,,%Pin.AnalogVideoIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_AnalogAudioIn%,Name,,%Pin.AnalogAudioIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_YUVOut%,Name,,%Pin.YUVOut%
+HKLM,%MediaCategories%\%GUID.PINNAME_AudioPCMOut%,Name,,%Pin.AudioPCMOUT%
+HKLM,%MediaCategories%\%GUID.PINNAME_YUVIn%,Name,,%Pin.YUVIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_AudioPCMIn%,Name,,%Pin.AudioPCMIn%
+HKLM,%MediaCategories%\%GUID.PINNAME_VBI%,Name,,%Pin.VBIOut%
+
+[Category.AddReg]
+HKCR,%ActiveMovieCategories%\%GUID.Encoder%,CLSID,,%GUID.Encoder%
+HKCR,%ActiveMovieCategories%\%GUID.Encoder%,FriendlyName,,%Category_Encoders%
+HKCR,%ActiveMovieCategories%\%GUID.Multiplexer%,CLSID,,%GUID.Multiplexer%
+HKCR,%ActiveMovieCategories%\%GUID.Multiplexer%,FriendlyName,,%Category_Multiplexers%
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; END for Port A, use for ATV ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Strings]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Port A;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;----------------
+; non-localizeable
+;----------------
+
+Proxy.CLSID="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSProxy.CLSID="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSTvTune.CLSID="{266EEE40-6C63-11cf-8A03-00AA006ECB65}"
+KSXBar.CLSID="{71F96460-78F3-11d0-A18C-00A0C9118956}"
+KSTVAudio.CLSID="{71F96462-78F3-11d0-A18C-00A0C9118956}"
+
+KSCATEGORY_BDATUNER="{71985F48-1CA1-11d3-9CC8-00C04F7971E0}"
+KSCATEGORY_CROSSBAR="{a799a801-a46d-11d0-a18c-00a02401dcd4}"
+KSCATEGORY_TVTUNER="{a799a800-a46d-11d0-a18c-00a02401dcd4}"
+KSCATEGORY_TVAUDIO="{a799a802-a46d-11d0-a18c-00a02401dcd4}"
+KSCATEGORY_ENCODER="{19689BF6-C384-48FD-AD51-90E58C79F70B}"
+KSCATEGORY_MULTIPLEXER="{7A5DE1D3-01A1-452c-B481-4FA2B96271E8}"
+KSCATEGORY_CAPTURE="{65E8773D-8F56-11D0-A3B9-00A0C9223196}"
+KSCATEGORY_VIDEO="{6994AD05-93EF-11D0-A3CC-00A0C9223196}"
+KSCATEGORY_DEVICE_IO_CONTROL="{cc7bfb46-f175-11d1-a392-00e0291f3959}"
+
+BdaAnlgSWTuner.DeviceId="{C1E230A9-520A-427b-8AC3-6489173DAE3A}"
+
+;KSSTRING_BdaAnlgSWTunerFilter="{8D118811-289C-4138-8EB9-DC7E2CE44000}"
+KSSTRING_BdaAnlgSWTunerFilter="{41C92CF2-5978-4ce2-B613-2BC544E34BF8}"
+KSSTRING_BdaXBarFilter="{0D741D45-01E3-4581-B009-C7843E1F6835}"
+KSSTRING_BdaEncoderFilter="{26E74D4F-D5E0-425d-847D-C478AA8DC4AA}"
+KSSTRING_BdaTVAudioFilter="{54ACCE3E-6484-470e-9EFE-22860812D40D}"
+KSSTRING_BdaAnlgCaptureFilter="{03CB1A33-BE78-45eb-B276-AA8F201B00F2}"
+KSSTRING_BdaDeviceIoControlFilter="{9193FDFC-2673-47a8-B472-0169218DBFB5}"
+
+;----------------
+; localizeable
+;----------------
+
+SM = "Somagic, Inc."
+SMAnalog = "Somagic, Inc."
+
+;;SMXBar="SM_XBar"
+;;SMEncoder="SM_Encoder"
+;;SMTVAudio="SM_TVAudio"
+;;SMAnlgCapture="SM_AnlgCapture"
+;;DRV_DISK = "SM Analog Tuner Drivers disk"
+
+MfgName             = "Somagic, Inc."
+SourceDisk          = "SMI Installation Disk"
+SM.CLSID      ="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"  ; KsProxy.ax's ID, REQUIRED
+
+;;AnalogTVDevice.DeviceDesc="SM A+D+FM Hybrid Device"
+;;AnalogBLDevice.DeviceDesc="SM A+D+FM Hybrid Device"
+SM.TV.DeviceDesc = "SMI Grabber Device"
+SM.BL.DeviceDesc = "SMI Grabber Device"
+;;HybridTv.FilterDesc="SMI Grabber Filter"
+HybridTv.FilterDesc="SMI Grabber Filter"
+
+SmBdaAnlgTuner.DeviceDesc="SM BDA Analog Device"
+BdaXBar.DeviceDesc="SM BDA Crossbar Device"
+BdaEncoder.DeviceDesc="SM BDA Encoder Device"
+BdaTVAudio.DeviceDesc="SM BDA TV Audio Device"
+BdaAnlgCapture.DeviceDesc="SM BDA Analog Capture Device"
+
+SmBdaAnlgTuner.FilterDesc="SM BDA Analog Tuner Filter"
+BdaXBar.FilterDesc="SM BDA Crossbar Filter"
+BdaEncoder.FilterDesc="SM BDA Encoder Filter"
+BdaTVAudio.FilterDesc="SM BDA TV Audio Filter"   
+BdaAnlgCapture.FilterDesc="SMI Grabber Device"
+BdaDeviceIoControl.FilterDesc="SM Device Control"
+
+MediaCategories="SYSTEM\CurrentControlSet\Control\MediaCategories"
+
+GUID.PINNAME_TVAudioIn="{606AB02F-7318-47ce-943D-BB40B6EF9D52}"
+GUID.PINNAME_TVAudioOut="{E70B2AAE-EF21-41ca-9364-A05BE93D59E9}"
+GUID.PINNAME_AnalogVideoOut="{0F6F4F80-3C26-4de2-A9CF-22FB4F7F5F48}"
+GUID.PINNAME_AnalogAudioOut="{10DF9484-88D1-4a80-8D34-633ACE36FA6D}"
+GUID.PINNAME_VideoTunerIn="{65BAC61C-FACB-4d5f-A0B8-4B6FEEB59873}"
+GUID.PINNAME_CompositeVideoIn="{D306DA2B-B7B3-41b9-90E9-57017A72C511}"
+GUID.PINNAME_SvideoVideoIn="{E6987B47-1FD9-4693-A025-276E0439B32F}"
+GUID.PINNAME_YPbPrVideoIn="{C8C16756-F955-4ca3-A197-432880C4D799}"
+GUID.PINNAME_AudioTunerIn="{667F65C5-699D-4eca-9BC4-334AB5F9C34E}"
+GUID.PINNAME_CompositeAudioIn="{C418644D-1F3E-4db8-B521-A1D68FB31658}"
+;;GUID.PINNAME_SvideoAudioIn="{A33A0005-23E8-4dc9-856C-DFEC80D8D849}"
+;;GUID.PINNAME_YPbPrVideoIn="{D1049BE7-8CF8-4eb3-B24A-363F3118B509}"
+GUID.PINNAME_VideoDecOut="{1DFE880F-7C65-4715-B3A9-39BCED70AAB7}"
+GUID.PINNAME_AudioDecOut="{5AF09A2D-2A4C-4074-BB0C-6D62908F8617}"
+GUID.PINNAME_AnalogVideoIn="{CD09343D-64B7-4ff5-9781-0324B1F2ED63}"
+GUID.PINNAME_AnalogAudioIn="{236519F5-3784-4040-86B7-D67FFB1D9B18}"
+GUID.PINNAME_YUVOut="{C7C496C1-B78B-4168-80B2-C1CB718C3C5E}"
+GUID.PINNAME_AudioPCMOut="{AC3299B6-A273-487d-92D2-4A20F3C48200}"
+GUID.PINNAME_YUVIn="{2A8A6A98-CD7D-4065-8A43-0EFE41C44F39}"
+GUID.PINNAME_AudioPCMIn="{3D328BDC-EB2C-43dd-941A-4CB5A43819A1}"
+GUID.PINNAME_VBI="{1987C6F9-88DE-49df-B5F3-5336A4ED56C4}"
+
+Pin.TVAudioIn="TV Audio In"
+Pin.TVAudioOut="TV Audio Out"
+Pin.AnalogVideoOut="Analog Video Out"
+Pin.AnalogAudioOut="Analog Audio Out"
+Pin.VideoTunerIn="Video Tuner In"
+Pin.CompositeVideoIn="Composite Video In"
+Pin.SvideoVideoIn="S-Video In"
+Pin.YPbPrVideoIn="YPbPr Video In"
+Pin.AudioTunerIn="Audio Tuner In"
+Pin.CompositeAudioIn="Composite Audio In"
+;;Pin.SvideoAudioIn="S-Audio In"
+;;Pin.YPbPrAudioIn="YPbPr Audio In"
+Pin.VideoDecOut="Video Decoder Out"
+Pin.AudioDecOut="Audio Decoder Out"
+Pin.AnalogVideoIn="Analog Video In"
+Pin.AnalogAudioIn="Analog Audio In"
+Pin.YUVOut="Video YUV Out"
+Pin.AudioPCMOUT="Audio PCM Out"
+Pin.YUVIn="Video YUV In"
+Pin.AudioPCMIn="Audio PCM In"
+Pin.VBIOut="VBI"
+
+ActiveMovieCategories="CLSID\{da4e3da0-d07d-11d0-bd50-00a0c911ce86}\Instance"
+GUID.Encoder="{19689BF6-C384-48fd-AD51-90E58C79F70B}"
+Category_Encoders="WDM Streaming Encoder Devices"
+
+GUID.Multiplexer="{7A5DE1D3-01A1-452c-B481-4FA2B96271E8}"
+Category_Multiplexers="WDM Streaming Multiplexer Devices"
+
+SM.FriendlyName = "SMI Grabber Device Tuner Filter 3C"
+SMCapture.FriendlyName = "SMI Grabber Device Capture Filter 3C"
+SM.Tuner      = "SMI.Tuner"
