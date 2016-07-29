@@ -1,6 +1,6 @@
 Baud rate = 57600
 
-Net ID = 1990
+Net ID = 199
 Air Speed = 64
 ECC = 1
 TX Power = 100 mW / 20 dBi
