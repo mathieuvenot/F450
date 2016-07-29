@@ -1,0 +1,15 @@
+Baud rate = 57600
+
+Net ID = 1990
+Air Speed = 64
+ECC = 1
+TX Power = 100 mW / 20 dBi
+Mavlink = 1 = Mavlink
+Max window = 131 (default)
+Min Freq = 414
+Max Freq = 454
+LBT_RSSI = 0
+Duty cycle = 100
+
+
+
