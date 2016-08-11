@@ -1,6 +1,0 @@
-mesure : 12.52V
-MP out : 2017mAh
-charge full : 2581mAh
-2700mAh
-
-Amp / Volt = 18 x (2581 / 2017) = 23.0332
