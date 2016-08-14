@@ -1,0 +1,5 @@
+Day is optimised for day time use and up to late sunset. After that it will become more grainy.
+
+Night is for people who want to use the script at night or under indoor lighting.
+It will work in daytime too, just slightly blurrier than the daytime one.
+I have not included superview on night so you can use 30fps modes (better for night time)
