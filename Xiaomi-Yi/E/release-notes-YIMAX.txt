@@ -1,0 +1,11 @@
+YiMAX-PRO script by nutsey for Xiaomi Yi action camera with 1.2.13 firmware.
+
+This script constantly removes 'watercolor' look caused by excessive in-cam image treatment routines. 
+It also provides 'flat' picture which can be used more efficiently during a footage postprocess.
+Additionally, the script enables the most preferred bitrate mode and settings reaching the limits of the hardware.
+
+How to uninstall: Remove or rename 2 files listed above.
+
+Check goprawn.com website for the latest updates and discussions.
+
+Release date: 07-07-2016.
