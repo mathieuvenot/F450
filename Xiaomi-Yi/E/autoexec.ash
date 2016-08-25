@@ -94,11 +94,6 @@ t app test debug_dump 14
 #set 4GB file weight limit
 writew 0xC03A8520 0x2004
 
-#MAT cleanup
-lu_util exec rm /tmp/fuse_d/DCIM/*MEDIA/*_thm.mp4
-lu_util exec rm /tmp/fuse_d/DCIM/*MEDIA/*.THM
-sleep 2
-
 #set AAA function
 # -3a [ae][awb][af][adj]: turn on/off ae/awb/af/adj
 #  ae = [0|1], 0:on 1:off AE
