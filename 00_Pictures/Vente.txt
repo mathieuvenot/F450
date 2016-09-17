@@ -1,0 +1,24 @@
+Bonjour,
+
+Je vends mon drone DJI F450, configuration APM 2.5 complete car manque de temps pour voler et potentiel passage sur Inspire 1 ou 3DR Solo pour application professionnelle.
+Le pack comprend :
+- Quadcopter DJI F450 tout équipé (3S, ESC SimonK 30A, 920KV)
+- APM 2.52 Open Source (montage du controleur de vol d'un Cheerson CX20, GPS, Compas externe)
+- Telemetry 3DR (Cablage Android microUSB-OTG), Power Module, Equipement FPV, Sonar
+- Controle possible par smartphone (Tower) et ordinateur (Mission Planner, UGCS)
+- Radio TX-RX 6CH du CX20 (Piles rechargeables fournis)
+- Xiaomi Yi (Filtres UV et Jello, Lentille de rechange) + Mobius ActionCam (Support, Lentille de rechange)
+- Gimbal Alu Eachine Light-2D (SimpleBGC 2.2b2)
+- 6 Batteries 3S (1000 - 2700 - 2800 - 4000 - 5200 - 5200mAh, autonomie entre 7 et 25min)
+- Chargeur Imax B6 Mini (Plaque de charge parallele, plein de cables - adaptateurs)
+- 8 jeux d'helices differentes tailles (1045, 9450, 9047, tripales, etc, dont 2 jeux en carbone)
+- Plein de pieces de rechange (Bras - frame en double, 6 moteurs en plus, 2 UBEC 5V, 3 pieds en plus, etc)
+- Plein d'elements de bricolage (Gaine thermo, visserie, cables, outillage, velcro, zipties, etc)
+- Elements de transport (Sac a dos rando, petite sacoche pour Radio, boites et cartons pour les pieces)
+Repo githup avec les etapes de calibration, parametrages, cablages disponible ici : https://github.com/mathieuvenot/F450
+Valeur d'origine du pack avec l'equipement complet d'environ 1350€.
+Je cede le tout pour 850€.
+
+N'hesitez pas si vous avez des questions. Reponse rapide par mail.
+Possibilité de se déplacer autour du 75 - 77 - 89, remise en mains propres.
+Mathieu
